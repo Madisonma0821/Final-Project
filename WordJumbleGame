@@ -1,0 +1,188 @@
+//**************************************************************************************************************
+//[NOT FINISHED ]                                                *
+//This program is created by Douzi Ma and [] and [].                                                              *
+//NOTE:IN THE PRES,PICK OUT TWO THINGS WE'VE LEARNED IN CLASS.                                                 *
+//**************************************************************************************************************
+
+//header files
+#include<iostream>
+#include<string>
+#include<cstdlib>
+#include<ctime> //create random words 
+
+using namespace std;
+
+namespace jumble
+{
+	//an array of string that can hold 10 elements of words
+	const string WORDS[10] =
+	{
+		"eyebrow","guitar","jelly","dolphin",
+		"rainbow","fire","phychology","vowel",
+		"hazelnut","cabin"
+	};
+
+	//an array of string that can hold 10 hints to those words respectively
+	const string HINTS[10] =
+	{
+		"It is on your face",
+		"It is a musical instrument",
+		"It is soft and semisolid",
+		"It is a memmal which does not live on the land",
+		"You can see it but you cannot touch it",
+		"It releases light",
+		"It is a study",
+		"A E I",
+		"My favorite flavor of coffee creamer",
+		"It is built of wood"
+	};
+};
+
+class wordJumble
+{
+public:
+	//constructor
+	wordJumble()
+	{
+		tries = 0;
+		index = (rand() % 10);
+		word = jumble::WORDS[index];
+		guess = " ";
+		jumbledWord = " ";
+		hint = jumble::HINTS[index];
+	}
+	void jumbleWord(string w);
+	void introduce();
+	void askHint();
+	void playAgain();
+	bool checkGuess(string g);
+	void run();
+	void popWord();
+
+private:
+	int tries;
+	int index;
+	string word;
+	string hint;
+	string jumbledWord;
+	string guess;
+};
+
+
+void wordJumble::jumbleWord(string w)
+{
+	//declare a string variable of the jumbled word
+	jumbledWord = w;
+	int length = jumbledWord.size(); // the length of the word will be used in for loop as a index
+
+	for (int i = 0; i < length; ++i)
+	{
+		int a = (rand() % length);
+		int b = (rand() % length);
+		char temp = jumbledWord[a];
+		jumbledWord[a] = jumbledWord[b];
+		jumbledWord[b] = temp;
+	}
+}
+
+void wordJumble::introduce()
+{
+	jumbleWord(word);
+	cout << "Welcome to the *WORD JUMBLE* game!!!" << endl;
+	cout << "Your will have three attemps to guess the word" << endl;
+	cout << "Type 'hint' for a hint" << endl;
+	cout << "Type 'quit'to quit the game" << endl;
+
+	cout << "The jumbled word is: " << jumbledWord;
+}
+
+void wordJumble::popWord()
+{
+	jumbleWord(word);
+	cout << "The jumbled word is: " << jumbledWord;
+	run();
+}
+void wordJumble::askHint()
+{
+	string H;
+	cout << "Your answer is wrong, do you want a hint?" << endl;
+	cout << "'hint' for hint, 'quit' for end" << endl;
+	cin >> H;
+	if (H == "hint")
+	{
+		cout << hint;
+		run();
+	}
+	else if (H == "quit")
+	{
+		cout << "Thank you for playing" << endl;
+	}
+	else
+	{
+		cout << "The answer is : " << word;
+	}
+}
+
+void  wordJumble::playAgain()
+{
+	string decision;
+	cout << "Do you want to play again?" << endl;
+	cout << "Type 'yes'for play again and 'quit' for quit" << endl;
+	cin >> decision;
+	if (decision == "yes")
+	{
+		popWord();
+	}
+	else if (decision == "quit")
+	{
+		cout << "Thank you for playing." << endl;
+		exit(0);
+	}
+}
+bool wordJumble::checkGuess(string g)
+{
+	tries++;
+	if (g == "hint")
+	{
+		cout << hint;
+		return false;
+	}
+	else if (g == "quit")
+	{
+		cout << "End the program" << endl;
+		cout << "Thank you for playing" << endl;
+	}
+	else if (g != word && g != "hint")
+	{
+		askHint();
+	}
+	else if (g == word)
+	{
+		string tempDecision;
+		cout << "Congradulations!! That is the right word" << endl;
+		
+		playAgain();
+	}
+}
+void wordJumble::run()
+{
+	while (true)
+	{
+		cout << "\nYour guess: " << endl;
+		cin >> guess;
+
+		if (checkGuess(guess))
+			break;
+	}
+}
+int main()
+{
+	srand(static_cast<unsigned int>(time(0)));
+
+	wordJumble game;
+	game.introduce();
+	game.run();
+	cin.ignore();
+	cin.get();
+	return 0;
+}
