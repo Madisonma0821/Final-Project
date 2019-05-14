@@ -46,10 +46,10 @@ public:
 	{
 		tries = 0;
 		index = (rand() % 10);
-		word = jumble::WORDS[index];
-		guess = " ";
+		word = " ";
+		guess = " ";;
 		jumbledWord = " ";
-		hint = jumble::HINTS[index];
+		hint = " ";
 	}
 	void jumbleWord(string w);
 	void introduce();
@@ -87,6 +87,8 @@ void wordJumble::jumbleWord(string w)
 
 void wordJumble::introduce()
 {
+	word = jumble::WORDS[index];
+	hint = jumble::HINTS[index];
 	jumbleWord(word);
 	cout << "Welcome to the *WORD JUMBLE* game!!!" << endl;
 	cout << "Your will have three attemps to guess the word" << endl;
@@ -98,10 +100,14 @@ void wordJumble::introduce()
 
 void wordJumble::popWord()
 {
+	int i = (rand() % 10);
+	word = jumble::WORDS[i];
+	hint = jumble::HINTS[i];
 	jumbleWord(word);
 	cout << "The jumbled word is: " << jumbledWord;
 	run();
 }
+
 void wordJumble::askHint()
 {
 	string H;
@@ -160,7 +166,7 @@ bool wordJumble::checkGuess(string g)
 	{
 		string tempDecision;
 		cout << "Congradulations!! That is the right word" << endl;
-		
+
 		playAgain();
 	}
 }
