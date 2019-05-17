@@ -4,14 +4,13 @@
 //The user will see a group of scrambling letters in random order                                              *
 //There will be TEN words in total and each word will have its hint                                            *
 //Users can choose to see the hint/ continue without hint/ quit after failing guessing the word.               *
-//This program is created by Douzi Ma and Lexin Li and Eliya.                                                  *
+//This program is created by Douzi Ma and Lexin Li and Bisha Feng.                                             *
 //Date: 05/17/2019                                                                                             *
 //                                                                                                             *
 //Let's begin!!                                                                                                *
 //**************************************************************************************************************
 
 //header files
-
 #include<iostream>
 #include<string>
 #include<cstdlib>
@@ -27,8 +26,8 @@ namespace jumble
 		"eyebrow","guitar","jelly","dolphin",
 		"rainbow","fire","psychology","vowel",
 		"hazelnut","cabin"
-	}; 
-	
+	};
+
 	//an array of string that can hold 10 hints to those words respectively
 	const string HINTS[10] =
 	{
@@ -78,7 +77,6 @@ private:
 
 //introduce function is a display function at the beginning of the game
 void wordJumble::introduce()
-
 {
 	//Set the first pair of word/hint (index is a random number)
 	word = jumble::WORDS[index];
@@ -87,13 +85,12 @@ void wordJumble::introduce()
 	jumbleWord(word);
 
 	cout << "Welcome to the *WORD JUMBLE* game!!!" << endl;
-	cout << "Your will have three attempts to guess the word" << endl;
+	cout << "You will have three attempts to guess each word" << endl;
 	cout << "Type 'hint' for a hint" << endl;
-	cout << "Type 'quit'to quit the game" << endl;
-	cout << "You will only have THREE chances to guess the word." << endl;
+	cout << "Type 'quit' to quit the game" << endl;
 
 	//Display the 1st word
-	cout << "The jumbled word is: " << jumbledWord;
+	cout << "\nThe jumbled word is: " << jumbledWord;
 }
 
 //jumbleWord function is used to scramble the word from the list
@@ -113,7 +110,7 @@ void wordJumble::jumbleWord(string w)
 }
 
 //run function starts by asking the user for his guess
-//everytieme the user want to playagain this function will be called 
+//everytieme the user want to play again this function will be called 
 void wordJumble::run()
 {
 	while (true) //while true==ture use for infinite loop
@@ -121,35 +118,33 @@ void wordJumble::run()
 		tries++;
 		cout << "\nYour guess: " << endl;
 		cin >> guess;
-		
+
 		//after 3 tries the answer is still wrong
-		if (tries >= 3&&guess!=word)
+		if (tries >= 3 && guess != word)
 		{
-			cout << "\nSorry, your guess is wrong and you have used up your three chances" << endl;
-			cout << "The right answer is " << word <<"\n"<< endl;
+			cout << "\nSorry, your guess is wrong and you have used up all your three chances" << endl;
+			cout << "The right answer is " << word << "\n" << endl;
+
 			//ask the user if they want to start a new round
-			tries = 0;
 			playAgain();
 			break;
 		}
-		
+
 		//The user got the answer on his 3rd try
 		if (tries == 3 && guess == word)
 		{
-			cout << "Congratulations! That is the right answer. " << endl;
-			tries = 0;
+			cout << "Congratulations! That is the right answer!\n" << endl;
 			playAgain();
 		}
 
-		//instead of check the guess in the run function, we will pass the guess to the checkGuess function 
+		//instead of checking the guess in the run function, we will pass the guess to the checkGuess function 
 		if (checkGuess(guess))
 			break; //while the user got the right answer, stop the loop menually by a break statement
-
 	}
 
-//check guess function is a bool function 
-//It will receive the string word that the user typed in from run function
-//And it will return true or false depends on the anwer
+	//check guess function is a bool function 
+	//It will receive the string word that the user typed in from run function
+	//And it will return true or false depends on the anwer
 }bool wordJumble::checkGuess(string g)
 {
 	//if the user want to see the hint directly, display the hint and return false
@@ -180,18 +175,17 @@ void wordJumble::run()
 	//ask the user if want to play again by calling the playAgain function
 	else if (g == word)
 	{
-		cout << "Congratulations!! That is the right word" << endl;
+		cout << "Congratulations!! That is the right word!\n" << endl;
 		playAgain();
 	}
 }
 
 //askHint function is used if the user's input neither the answer no 
 void wordJumble::askHint()
-
 {
 	string H;
-	beginning:
-	cout << "Your answer is wrong, do you want a hint?" << endl;
+beginning:
+	cout << "\nYour answer is wrong, do you want a hint?" << endl;
 	cout << "'hint' for hint, 'quit' for end, 'c' for continuing guessing" << endl;
 	cin >> H;
 
@@ -216,9 +210,9 @@ void wordJumble::askHint()
 		exit(0);
 	}
 
-	else if (H== word)
+	else if (H == word)
 	{
-		cout << "Congradulations!! That's the right answer" << endl;
+		cout << "Congratulations!! That's the right answer!\n" << endl;
 		playAgain();
 	}
 	//if the answer is not the options provided above, by setting a beginning point
@@ -235,15 +229,20 @@ void  wordJumble::playAgain()
 {
 	string decision;
 	cout << "Do you want to play again?" << endl;
-	cout << "Type 'yes'for play again and 'quit' for quit" << endl;
-
+	cout << "Type 'yes' for play again and 'quit' for quit" << endl;
 	cin >> decision;
+	while (decision != "yes" && decision != "quit")
+	{
+		cout << "Unknown command. Please type 'yes' for play again and 'quit' for quit" << endl;
+		cin >> decision;
+	}
 
 	if (decision == "yes")
 	{
 		//if the user want to play again, use the popWord function to create a different word from the previous one
 		//Notice:if we just call the introduction function again, it will display the same word again
 		//That's the reason we made the popword function
+		tries = 0;
 		popWord();
 	}
 
@@ -260,12 +259,12 @@ void wordJumble::popWord()
 {
 	int i = (rand() % 10); //a new random number between 1 and 10
 
-	//choose the i th word and scramble it
+						   //choose the i th word and scramble it
 	word = jumble::WORDS[i];
 	hint = jumble::HINTS[i];
 	jumbleWord(word);
 
-	cout << "The jumbled word is: " << jumbledWord;
+	cout << "\nThe jumbled word is: " << jumbledWord;
 	//Now we can run the whole process again
 	run();
 }
